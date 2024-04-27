@@ -36,8 +36,10 @@
     import axios from 'axios';
     import { useCookies } from 'vue3-cookies';
     import { useRouter } from 'vue-router';
+    import { defineEmits } from 'vue';
 
     const router = useRouter();
+    let $emit = defineEmits(['toggleLogin']);
 
     let user = ref({
         username: '',
@@ -53,6 +55,7 @@
 
     const logout = () => {
         cookies.remove('token');
+        $emit('toggleLogin', false);
         router.push('/login');
     };
 

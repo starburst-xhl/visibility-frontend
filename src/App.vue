@@ -5,6 +5,10 @@
         <div class="router-link-container" v-if="isLogin">
           <router-link to="/home" class="home-link">个人信息</router-link>
         </div>
+        <div class="router-link-container" v-if="isLogin && isManager">
+          <router-link to="/home" class="home-link">用户管理</router-link>
+          </div>
+
         <!-- <div class="router-link-container" v-if="isLogin">
           <router-link to="/home" class="home-link">个人信息</router-link>
         </div> -->
@@ -17,7 +21,7 @@
       </header>
 
       <div class="content">
-        <router-view></router-view>
+        <router-view @toggleLogin="toggleLogin"></router-view>
       </div>
     </div>
   </main>
@@ -29,9 +33,12 @@ import { ref } from 'vue'
 import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { RouterView } from 'vue-router';
+import login from './components/login.vue'
+import home from './components/home.vue'
 
 
 const isLogin = ref(false)
+const isManager = ref(false)
 const router = useRouter()
 
 
@@ -67,9 +74,6 @@ const toggleLogin = (islogin: boolean) => {
   isLogin.value = islogin
 }
 
-defineExpose<{toggleLogin:(islogin:boolean) => void}>({
-  toggleLogin
-})
 // const toggleDarkMode = () => {
 //   isDark.value = !isDark.value
 // }
