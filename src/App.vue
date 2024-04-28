@@ -17,7 +17,7 @@
     </div>
     <div class="page">
       <header class="headbar">
-        <h1>Welcome to Our Site</h1>
+        <h1>能见度监测管理系统</h1>
       </header>
 
       <div class="content">
