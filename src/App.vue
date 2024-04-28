@@ -87,11 +87,6 @@ const toggleManager = (ismanager: boolean) => {
 
 <!-- 默认样式 -->
 <style scoped>
-html,body{
-  height: 100%;
-  width: 100%;
-}
-
 main {
   display: flex;
   height: 100vh;
@@ -147,7 +142,7 @@ main {
 <style> 
 .dark h1,h2,h3,h4,h5,h6,p,span{
   background-color: #333;
-  color: #fff;
+  color: #ddd;
 }
 .dark div{
   background-color: #333;
