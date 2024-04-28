@@ -39,7 +39,7 @@
     import { defineEmits } from 'vue';
 
     const router = useRouter();
-    let $emit = defineEmits(['toggleLogin']);
+    let $emit = defineEmits(['toggleLogin','toggleManager']);
 
     let user = ref({
         username: '',
@@ -56,6 +56,7 @@
     const logout = () => {
         cookies.remove('token');
         $emit('toggleLogin', false);
+        $emit('toggleManager', false);
         router.push('/login');
     };
 

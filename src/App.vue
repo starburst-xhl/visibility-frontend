@@ -6,7 +6,7 @@
           <router-link to="/home" class="home-link">个人信息</router-link>
         </div>
         <div class="router-link-container" v-if="isLogin && isManager">
-          <router-link to="/home" class="home-link">用户管理</router-link>
+          <router-link to="/manage" class="manage-link">用户管理</router-link>
           </div>
 
         <!-- <div class="router-link-container" v-if="isLogin">
@@ -21,7 +21,7 @@
       </header>
 
       <div class="content">
-        <router-view @toggleLogin="toggleLogin"></router-view>
+        <router-view @toggleLogin="toggleLogin" @toggleManager="toggleManager"></router-view>
       </div>
     </div>
   </main>
@@ -35,6 +35,7 @@ import { useRouter } from 'vue-router'
 import { RouterView } from 'vue-router';
 import login from './components/login.vue'
 import home from './components/home.vue'
+import manage from './components/manage.vue'
 
 
 const isLogin = ref(false)
@@ -57,6 +58,7 @@ onMounted(async () => {
           Authorization: `${token}`
         }})
       isLogin.value = response.data.isLogin
+      isManager.value = response.data.role === 'manager'
     } catch (error) {
     console.error(error)
     }
@@ -72,6 +74,10 @@ const isDark = ref(true)
 
 const toggleLogin = (islogin: boolean) => {
   isLogin.value = islogin
+}
+
+const toggleManager = (ismanager: boolean) => {
+  isManager.value = ismanager
 }
 
 // const toggleDarkMode = () => {

@@ -31,7 +31,7 @@ const { isLogin } = defineProps(['isLogin']);
 const username = ref('');
 const password = ref('');
 const router = useRouter();
-let $emit = defineEmits(['toggleLogin']);
+let $emit = defineEmits(['toggleLogin','toggleManager']);
 
 const submitForm = () => {
 
@@ -43,6 +43,11 @@ const submitForm = () => {
     console.log(response);
     if (response.data.code === 200) {
       cookies.set('token', response.data.token, 60 * 60 * 24 * 7);
+      if (response.data.role === 'manager') {
+        $emit('toggleManager', true);
+      }else{
+        $emit('toggleManager', false);
+      }
       $emit('toggleLogin', true);
       alert('登录成功');
       router.push("/home");
