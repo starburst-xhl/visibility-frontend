@@ -44,3 +44,7 @@ const handleClose = () => {
     props.close?.();
 };
 </script>
+
+<style scoped>
+
+</style>
