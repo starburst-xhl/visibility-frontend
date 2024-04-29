@@ -16,7 +16,7 @@
             <tr>
                 <th><p>密码</p></th>
                 <td>
-                    <input v-model="user.password" v-if="updateMode" />
+                    <input v-model="user.password" v-if="updateMode" type="password"/>
                     <p v-else>******</p>
                 </td>
             </tr>

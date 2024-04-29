@@ -5,14 +5,15 @@
             <input type="password" v-model="newUser.password" placeholder="password" required>
             <button type="submit">新增</button>
         </form>
-        <table>
+        <table class="user_management_table">
             <thead>
                 <tr>
-                    <th><span>ID</span></th>
+                    <th><span>用户ID</span></th>
                     <th><span>用户名</span></th>
                     <th><span>职务</span></th>
                     <th><span>密码</span></th>
                     <th><span>手机</span></th>
+                    <th><span>创建时间</span></th>
                     <th><span>操作</span></th>
                 </tr>
             </thead>
@@ -23,6 +24,7 @@
                     <td><span>{{ user.role }}</span></td>
                     <td><span>{{ user.password }}</span></td>
                     <td><span>{{ user.phone_nbr }}</span></td>
+                    <td><span></span></td>
                     <td>
                         <button @click="editUser(user)">编辑</button>
                         <button @click="deleteUser(user)">删除</button>
@@ -30,7 +32,6 @@
                 </tr>
             </tbody>
         </table>
-
     </div>
 </template>
 
@@ -38,10 +39,24 @@
 import { ref, reactive } from 'vue';
 import axios from 'axios';
 import { useCookies } from 'vue3-cookies';
-
+import { useRouter } from 'vue-router';
 import { onMounted, onBeforeUnmount } from 'vue';
+import { format } from 'date-fns';
 
+const { cookies } = useCookies();
+const router = useRouter();
+let $emit = defineEmits(['toggleLogin', 'toggleManager']);
 
+const formattedDate = (date:Date) => {
+      return format(date, 'yyyy-MM-dd');
+    };
+
+const logout = () => {
+    cookies.remove('token');
+    $emit('toggleLogin', false);
+    $emit('toggleManager', false);
+    router.push('/login');
+};
 
 interface User {
     id: number;
@@ -54,8 +69,7 @@ interface User {
 
 let arr: User[] = []
 const users = ref(arr);
-const { cookies } = useCookies();
-const toggleAddMode = ref(false);
+const toggleAddMode = ref(false);//TODO: add mode
 
 // Fetch users from the server
 const fetchUsers = async () => {
@@ -66,8 +80,13 @@ const fetchUsers = async () => {
             }
         });
         users.value = response.data.data;
+        if (response.data.code !== 200) {
+            alert('获取用户失败');
+            logout();
+        }
     } catch (error) {
         console.error('Error fetching users:', error);
+        logout();
     }
 };
 
@@ -95,13 +114,28 @@ const newUser = reactive({
 });
 
 const editUser = (user: User) => {
-    // Implement edit user logic here
-    console.log('Editing user:', user);
+    
 };
 
-const deleteUser = (user: User) => {
-    // Implement delete user logic here
-    console.log('Deleting user:', user);
+const deleteUser = async (user: User) => {
+    await axios.delete('http://localhost:5173/api/user', {
+        headers: {
+            Authorization: `${cookies.get('token')}`
+        },
+        params: {
+            id: user.id
+        }
+    }).then((response) => {
+        if (response.data.code !== 200) {
+            alert('删除用户失败');
+            return;
+        }
+        console.log('User deleted:', user);
+        alert('删除用户成功');
+        fetchUsers();
+    }).catch((error) => {
+        console.error('Error deleting user:', error);
+    });
 };
 
 const addUser = () => {
@@ -149,15 +183,37 @@ td {
     padding: 0.5rem;
 }
 
+td span {
+    background-color: transparent;
+}
+
 th span {
     color: rgb(34, 197, 94);
+    background-color: transparent;
 }
 
 th {
     padding: 0.5rem;
+    text-align: left;
 }
 
 thead {
     border-color: aliceblue;
+    background-color: #444;
+}
+
+.user_management_table {
+    border-collapse: collapse;
+    width: 50vw;
+}
+
+tbody {
+    tr:nth-child(2n) {
+        background-color: #404840;
+    }
+
+    tr:nth-child(2n+1) {
+        background-color: #405040;
+    }
 }
 </style>
