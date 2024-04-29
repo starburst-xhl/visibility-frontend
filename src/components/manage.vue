@@ -42,6 +42,9 @@ import { useCookies } from 'vue3-cookies';
 import { useRouter } from 'vue-router';
 import { onMounted, onBeforeUnmount } from 'vue';
 import { format } from 'date-fns';
+import { defineEmits } from 'vue';
+import { defineProps } from 'vue';
+import userEditDialog from '@/dialogs/userEditDialog.vue';
 
 const { cookies } = useCookies();
 const router = useRouter();
