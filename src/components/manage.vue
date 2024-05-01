@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="user_management_header">
-            <h1>用户管理</h1>
+            <h2>用户管理</h2>
             <button @click="addUserMode" type="button">新增</button>
         </div>
         <table class="user_management_table">
@@ -213,7 +213,7 @@ button {
     background-color: #555;
     border: none;
     padding: 0.3rem;
-    font-size: 0.5rem;
+    font-size: 0.8rem;
     width: 4em;
     border-radius: 0.3rem;
     color: rgb(34, 197, 94);
@@ -291,5 +291,12 @@ tbody {
     border: #555 solid 0.1em;
     box-shadow: 0.5em 0.5em 0.2em #282828;
     border-radius: 0.5em;
+}
+
+.user_management_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1em;
 }
 </style>
