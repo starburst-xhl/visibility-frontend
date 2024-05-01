@@ -1,11 +1,9 @@
 <template>
     <div>
-        <form @submit.prevent="addUser">
-            <input type="text" v-model="newUser.username" placeholder="username" required>
-            <input type="password" v-model="newUser.password" placeholder="password" required>
-            <input type="number" v-model="newUser.phone_nbr" placeholder="phone number" required>
-            <button type="submit">新增</button>
-        </form>
+        <div class="user_management_header">
+            <h1>用户管理</h1>
+            <button @click="addUserMode" type="button">新增</button>
+        </div>
         <table class="user_management_table">
             <thead>
                 <tr>
@@ -34,8 +32,9 @@
             </tbody>
         </table>
     </div>
-    <div class="edit_dialog">
-        <userEditDialog v-if="editMode" :visible="editMode" @close="toggleEditMode(false)" @confirm="updateUser"/>
+    <div class="edit_dialog" v-if="addMode || editMode">
+        <userEditDialog @close="closeDialog" @confirm="updateUser" @upload="addUser" :user="userInEdit"
+            :editMode="editMode" />
     </div>
 </template>
 
@@ -48,6 +47,7 @@ import { onMounted, onBeforeUnmount } from 'vue';
 import { format } from 'date-fns';
 import { defineEmits } from 'vue';
 import userEditDialog from '@/dialogs/userEditDialog.vue';
+import type { User } from '@/assets/types';
 
 let arr: User[] = []
 const users = ref(arr);
@@ -56,17 +56,22 @@ const editMode = ref(false);
 const { cookies } = useCookies();
 const router = useRouter();
 let $emit = defineEmits(['toggleLogin', 'toggleManager']);
-let userInEdit = ref<User>({
-    id: 0,
+let userInEdit = ref<User | null>({
+    id: NaN,
     username: '',
     password: '',
-    phone_nbr: 0,
+    phone_nbr: NaN,
     role: '',
     create_at: new Date()
 });
 
 const formattedDate = (date: Date) => {
     return format(date, 'yyyy-MM-dd');
+};
+
+const closeDialog = () => {
+    toggleEditMode(false);
+    toggleAddMode(false);
 };
 
 const toggleAddMode = (mode: boolean) => {
@@ -83,16 +88,6 @@ const logout = () => {
     $emit('toggleManager', false);
     router.push('/login');
 };
-
-interface User {
-    id?: number;
-    username: string;
-    password: string;
-    phone_nbr: number;
-    role: string;
-    create_at: Date;
-}
-
 
 // Fetch users from the server
 const fetchUsers = async () => {
@@ -130,17 +125,13 @@ onBeforeUnmount(() => {
 
 window.addEventListener('popstate', routeChangeHandler);
 
-const newUser = reactive({
-    username: '',
-    password: '',
-    phone_nbr: 0,
-    role: ''
-});
-
 const editUser = (user: User) => {
     toggleEditMode(true);
-    //TODO: Copy user to userInEdit
-    //TODO: 完善逻辑
+    userInEdit.value = user;
+};
+
+const addUserMode = () => {
+    toggleAddMode(true);
 };
 
 const updateUser = async (user: User) => {
@@ -149,6 +140,7 @@ const updateUser = async (user: User) => {
             Authorization: `${cookies.get('token')}`
         },
         params: {
+            id: user.id,
             username: user.username,
             password: user.password,
             phone_nbr: user.phone_nbr,
@@ -163,6 +155,7 @@ const updateUser = async (user: User) => {
         alert('编辑用户成功');
         fetchUsers();
     }).catch((error) => {
+        alert('编辑用户失败');
         console.error('Error updating user:', error);
     });
 };
@@ -184,36 +177,34 @@ const deleteUser = async (user: User) => {
         alert('删除用户成功');
         fetchUsers();
     }).catch((error) => {
+        alert('删除用户失败');
         console.error('Error deleting user:', error);
     });
 };
 
-const addUser = () => {
-    axios.post('http://localhost:5173/api/user', {}, {
+const addUser = async (user: User) => {
+    await axios.post('http://localhost:5173/api/user', {}, {
         headers: {
             Authorization: `${cookies.get('token')}`
         },
         params: {
-            username: newUser.username,
-            password: newUser.password,
-            phone_nbr: newUser.phone_nbr,
-            role: newUser.role
+            username: user.username,
+            password: user.password,
+            phone_nbr: user.phone_nbr,
+            role: user.role
         }
     }).then((response) => {
         if (response.data.code !== 200) {
             alert('添加用户失败');
             return;
         }
-        console.log('User added:', newUser);
+        console.log('User added:', user);
         alert('添加用户成功');
         fetchUsers();
     }).catch((error) => {
+        alert('添加用户失败');
         console.error('Error adding user:', error);
     });
-    // Clear the form fields after adding the user
-    newUser.username = '';
-    newUser.phone_nbr = NaN;
-    newUser.password = '';
 };
 </script>
 
@@ -289,10 +280,10 @@ tbody {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 16em;
-    height: 20em;
-    margin-left: -10em;
-    margin-top: -8em;
+    width: 22em;
+    height: 28em;
+    margin-left: -11em;
+    margin-top: -14em;
     display: flex;
     justify-content: center;
     align-items: center;
