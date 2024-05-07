@@ -13,6 +13,14 @@ export enum Role {
     Emploee = "emploee",
 }
 
+export interface Photo {
+    id: number;
+    date: Date;
+    location: string;
+    visibility: number;
+    path: string;
+}
+
 // // Export a user object
 // export const user: User = {
 //     id: 1,

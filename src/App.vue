@@ -7,8 +7,12 @@
         </div>
         <div class="router-link-container" v-if="isLogin && isManager">
           <router-link to="/manage" class="manage-link">用户管理</router-link>
-          </div>
+        </div>
+        <div class="router-link-container" v-if="isLogin">
+          <router-link to="/chart" class="chart-link">能见度总览</router-link>
+        </div>
 
+        <!-- <div class="router-link-container" v-if="isLogin">
         <!-- <div class="router-link-container" v-if="isLogin">
           <router-link to="/home" class="home-link">个人信息</router-link>
         </div> -->
@@ -51,22 +55,23 @@ const { cookies } = useCookies()
 let token = cookies.get("token")
 
 onMounted(async () => {
-  if (token){
+  if (token) {
     try {
-      const response = await axios.get('http://localhost:5173/api/login/token',{
+      const response = await axios.get('http://localhost:5173/api/login/token', {
         headers: {
           Authorization: `${token}`
-        }})
+        }
+      })
       isLogin.value = response.data.isLogin
       isManager.value = response.data.role === 'manager'
     } catch (error) {
-    console.error(error)
+      console.error(error)
     }
   }
   if (!isLogin.value) {
     router.push('/login')
     alert('请先登录')
-  }else{
+  } else {
     router.push('/home')
   }
 })
@@ -118,7 +123,7 @@ main {
 }
 
 .sidebar {
-  flex: 1 1 auto;
+  width: 200px;
   background: linear-gradient(rgb(187, 247, 208), rgb(34, 197, 94));
   display: flex;
   flex-direction: column;
@@ -139,21 +144,30 @@ main {
 </style>
 
 <!-- 加入以下样式到style标签中，使得dark模式下的样式生效： -->
-<style> 
-.dark h1,h2,h3,h4,h5,h6,p,span{
+<style>
+.dark h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span {
   background-color: #333;
   color: #ddd;
 }
-.dark div{
+
+.dark div {
   background-color: #333;
   color: #333;
 }
-.dark .sidebar{
+
+.dark .sidebar {
   background: linear-gradient(#333, rgb(17, 98, 47));
   color: #333;
 }
 
-a.router-link-exact-active{
+a.router-link-exact-active {
   text-decoration: underline;
 }
 </style>

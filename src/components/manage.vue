@@ -149,6 +149,7 @@ const updateUser = async (user: User) => {
     }).then((response) => {
         if (response.data.code !== 200) {
             alert('编辑用户失败');
+            logout();
             return;
         }
         console.log('User updated:', user);
@@ -157,6 +158,7 @@ const updateUser = async (user: User) => {
     }).catch((error) => {
         alert('编辑用户失败');
         console.error('Error updating user:', error);
+        logout();
     });
 };
 
@@ -171,6 +173,7 @@ const deleteUser = async (user: User) => {
     }).then((response) => {
         if (response.data.code !== 200) {
             alert('删除用户失败');
+            logout();
             return;
         }
         console.log('User deleted:', user);
@@ -179,6 +182,7 @@ const deleteUser = async (user: User) => {
     }).catch((error) => {
         alert('删除用户失败');
         console.error('Error deleting user:', error);
+        logout();
     });
 };
 
@@ -196,6 +200,7 @@ const addUser = async (user: User) => {
     }).then((response) => {
         if (response.data.code !== 200) {
             alert('添加用户失败');
+            logout();
             return;
         }
         console.log('User added:', user);
@@ -204,6 +209,7 @@ const addUser = async (user: User) => {
     }).catch((error) => {
         alert('添加用户失败');
         console.error('Error adding user:', error);
+        logout();
     });
 };
 </script>
