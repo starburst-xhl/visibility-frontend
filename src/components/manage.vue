@@ -4,33 +4,35 @@
             <h2>用户管理</h2>
             <button @click="addUserMode" type="button">新增</button>
         </div>
-        <table class="user_management_table">
-            <thead>
-                <tr>
-                    <th><span>用户ID</span></th>
-                    <th><span>用户名</span></th>
-                    <th><span>职务</span></th>
-                    <th><span>密码</span></th>
-                    <th><span>手机</span></th>
-                    <th><span>创建时间</span></th>
-                    <th><span>操作</span></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="user in users" :key="user.id">
-                    <td><span>{{ user.id }}</span></td>
-                    <td><span>{{ user.username }}</span></td>
-                    <td><span>{{ user.role }}</span></td>
-                    <td><span>{{ user.password }}</span></td>
-                    <td><span>{{ user.phone_nbr }}</span></td>
-                    <td><span>{{ formattedDate(user.create_at) }}</span></td>
-                    <td>
-                        <button @click="editUser(user)">编辑</button>
-                        <button @click="deleteUser(user)">删除</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="user_management_table_container">
+            <table class="user_management_table">
+                <thead>
+                    <tr>
+                        <th><span>用户ID</span></th>
+                        <th><span>用户名</span></th>
+                        <th><span>职务</span></th>
+                        <th><span>密码</span></th>
+                        <th><span>手机</span></th>
+                        <th><span>创建时间</span></th>
+                        <th><span>操作</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="user in users" :key="user.id">
+                        <td><span>{{ user.id }}</span></td>
+                        <td><span>{{ user.username }}</span></td>
+                        <td><span>{{ user.role }}</span></td>
+                        <td><span>{{ user.password }}</span></td>
+                        <td><span>{{ user.phone_nbr }}</span></td>
+                        <td><span>{{ formattedDate(user.create_at) }}</span></td>
+                        <td>
+                            <button @click="editUser(user)">编辑</button>
+                            <button @click="deleteUser(user)">删除</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
     <div class="edit_dialog" v-if="addMode || editMode">
         <userEditDialog @close="closeDialog" @confirm="updateUser" @upload="addUser" :user="userInEdit"
@@ -270,6 +272,12 @@ thead {
 .user_management_table {
     border-collapse: collapse;
     width: 50vw;
+}
+
+.user_management_table_container {
+    width: fit-content;
+    max-height: 50vh;
+    overflow-y: auto;
 }
 
 tbody {
