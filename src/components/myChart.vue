@@ -1,6 +1,6 @@
 <template>
     <div class="chart-container">
-        <v-chart class="chart" :option="option" v-if="isRender" />
+        <v-chart class="chart" v-for="(record, index) in data" :key="index" :option="getChartOptions(record,index)" v-if="isRender" />
         <div v-if="!isRender" class="loader"></div>
     </div>
 </template>
@@ -57,7 +57,6 @@ const getData = async () => {
         },
     }).then((response) => {
         myData.value = response.data;
-        
         isRender.value = true;
     }).catch((error) => {
         console.error(error);
@@ -122,6 +121,63 @@ const option = computed(() => {
         ]
     }
 });
+
+const getChartOptions = (record: Photo[], index: string) => {
+    return {
+        title: {
+            text: index,
+            left: 'center',
+            top: "0%",
+            textStyle: {
+                color: '#ccc',
+            }
+        },
+        xAxis: {
+            type: 'time',
+        },
+        yAxis: {
+            type: 'value'
+        },
+        tooltip: {
+            trigger: 'axis', // 显示横坐标值
+        },
+        dataZoom: [
+            {
+                type: 'slider',
+                show: true,
+                xAxisIndex: [0],
+                start: 0,
+                end: 100,
+                bottom: 0,
+            }
+        ],
+        series: [
+            {
+                name: 'visibility',
+                data: record.map((photo) => {
+                    return [photo.date, photo.visibility];
+                }),
+                symbol: 'none',
+                type: 'line',
+                itemStyle: {
+                    color: 'rgb(255, 70, 131)'
+                },
+                areaStyle: {
+                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                        {
+                            offset: 0,
+                            color: 'rgb(255, 158, 68)'
+                        },
+                        {
+                            offset: 1,
+                            color: 'rgb(255, 70, 131)'
+                        }
+                    ])
+                },
+            }
+        ]
+    }
+}
 
 getData();
 </script>

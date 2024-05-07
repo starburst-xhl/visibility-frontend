@@ -3,20 +3,15 @@
     <div class="sidebar">
       <nav class="nav-links">
         <div class="router-link-container" v-if="isLogin">
-          <router-link to="/home" class="home-link">个人信息</router-link>
+          <router-link to="/chart" class="chart-link">能见度总览</router-link>
         </div>
+
         <div class="router-link-container" v-if="isLogin && isManager">
           <router-link to="/manage" class="manage-link">用户管理</router-link>
         </div>
         <div class="router-link-container" v-if="isLogin">
-          <router-link to="/chart" class="chart-link">能见度总览</router-link>
-        </div>
-
-        <!-- <div class="router-link-container" v-if="isLogin">
-        <!-- <div class="router-link-container" v-if="isLogin">
           <router-link to="/home" class="home-link">个人信息</router-link>
-        </div> -->
-        <!-- <router-link to="/about">关于</router-link> -->
+        </div>
       </nav>
     </div>
     <div class="page">
@@ -72,7 +67,7 @@ onMounted(async () => {
     router.push('/login')
     alert('请先登录')
   } else {
-    router.push('/home')
+    router.push('/chart')
   }
 })
 const isDark = ref(true)
