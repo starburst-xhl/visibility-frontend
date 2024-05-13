@@ -21,9 +21,13 @@ export interface Photo {
     path: string;
 }
 
-// // Export a user object
-// export const user: User = {
-//     id: 1,
-//     name: "John Doe",
-//     email: "john.doe@example.com",
-// };
+export interface PhotoStatus {
+    id: number;
+    date: Date;
+    location: string;
+    visibility: number;
+    status: number;
+    userid: number;
+    new_visibility:number;
+    username:string;
+}

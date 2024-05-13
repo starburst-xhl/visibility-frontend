@@ -12,15 +12,21 @@
         <div class="router-link-container" v-if="isLogin">
           <router-link to="/home" class="home-link">个人信息</router-link>
         </div>
+        <div class="router-link-container" v-if="isLogin && !isManager">
+          <router-link to="/check" class="photo-link">审核</router-link>
+        </div>
+        <div class="router-link-container" v-if="isLogin">
+          <router-link to="/photoManage" class="photo-link">数据管理</router-link>
+        </div>
       </nav>
     </div>
     <div class="page">
       <header class="headbar">
-        <h1>能见度监测管理系统</h1>
+        <h2>欢迎来到能见度监测管理系统</h2>
       </header>
 
       <div class="content">
-        <router-view @toggleLogin="toggleLogin" @toggleManager="toggleManager"></router-view>
+        <router-view @toggleLogin="toggleLogin" @toggleManager="toggleManager" :isManager="isManager"></router-view>
       </div>
     </div>
   </main>
@@ -102,6 +108,10 @@ main {
   font-size: 1.2em;
   text-decoration: none;
   text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+}
+
+.router-link-container {
+  background-color: transparent;
 }
 
 .router-link+.router-link {

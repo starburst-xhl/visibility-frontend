@@ -15,7 +15,6 @@ import axios from 'axios';
 import type { Photo } from '@/assets/types';
 import { useCookies } from 'vue3-cookies';
 import VChart from 'vue-echarts';
-import { GridLayout, GridItem } from 'vue-grid-layout'
 import { useRouter } from 'vue-router';
 import * as echarts from 'echarts/core';
 
