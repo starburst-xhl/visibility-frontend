@@ -186,15 +186,6 @@ getPhotos();
 </script>
 
 <style scoped>
-/* Add your custom styles here */
-.photo-details {
-    /* Styles for photo details */
-}
-
-.pagination {
-    /* Styles for pagination */
-}
-
 .loader {
     width: 60px;
     height: 60px;

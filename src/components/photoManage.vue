@@ -90,12 +90,12 @@ const props = defineProps(['isManager']);
 const filteredPhotos = computed(() => {
     return data.value.filter(photo => {
         return photo.location.includes(state.searchLocation) &&
-             issearchuser(photo) &&
+            issearchuser(photo) &&
             (state.filterStatus == 4 || photo.status == state.filterStatus);
     });
 });
 
-const issearchuser = (photo:PhotoStatus) => {
+const issearchuser = (photo: PhotoStatus) => {
     if (state.searchUsername === '') {
         return true;
     }
@@ -164,7 +164,7 @@ const dispense = async () => {
             Authorization: `${cookies.get('token')}`,
         },
         params: {
-            resolution:"order"
+            resolution: "order"
         },
     }).then((response) => {
         console.log(response);
@@ -394,8 +394,5 @@ input[type=number] {
     &::-webkit-inner-spin-button {
         -webkit-appearance: none;
     }
-
-    -moz-appearance: textfield;
-
 }
 </style>
