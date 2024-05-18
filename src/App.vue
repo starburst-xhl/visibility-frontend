@@ -5,9 +5,11 @@
         <div class="router-link-container" v-if="isLogin">
           <router-link to="/chart" class="chart-link">能见度总览</router-link>
         </div>
-
         <div class="router-link-container" v-if="isLogin && isManager">
           <router-link to="/manage" class="manage-link">用户管理</router-link>
+        </div>
+        <div class="router-link-container" v-if="isLogin && !isManager">
+          <router-link to="/userSelect" class="manage-link">用户管理</router-link>
         </div>
         <div class="router-link-container" v-if="isLogin">
           <router-link to="/home" class="home-link">个人信息</router-link>
@@ -15,8 +17,20 @@
         <div class="router-link-container" v-if="isLogin && !isManager">
           <router-link to="/check" class="photo-link">审核</router-link>
         </div>
+        <div class="router-link-container" v-if="isLogin && isManager">
+          <router-link to="/check" class="photo-link">复审</router-link>
+        </div>
         <div class="router-link-container" v-if="isLogin">
           <router-link to="/photoManage" class="photo-link">数据管理</router-link>
+        </div>
+        <div class="router-link-container" v-if="isLogin && isManager">
+          <router-link to="/logs" class="photo-link">日志查询</router-link>
+        </div>
+        <div class="router-link-container" v-if="isLogin && isManager">
+          <router-link to="/upload" class="photo-link">上传</router-link>
+        </div>
+        <div class="router-link-container" v-if="isLogin">
+          <router-link to="/chat" class="photo-link">通讯</router-link>
         </div>
       </nav>
     </div>

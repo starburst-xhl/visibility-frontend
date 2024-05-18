@@ -31,3 +31,9 @@ export interface PhotoStatus {
     new_visibility:number;
     username:string;
 }
+
+export interface Log {
+    id: number;
+    date: Date;
+    content: string;
+}

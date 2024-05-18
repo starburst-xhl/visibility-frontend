@@ -3,6 +3,7 @@
         <div class="photo_management_header">
             <h2>照片管理</h2>
             <button v-if="props.isManager" @click="dispense" style="width: fit-content;">分配审核员</button>
+            <button v-if="props.isManager" @click="dispense" style="width: fit-content;">导出数据</button>
         </div>
         <div class="search-filters">
             <div class="wave-group">
