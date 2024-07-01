@@ -42,7 +42,7 @@ const myLogs = [
 const getLogs = async () => {
     const response = await axios.get('http://localhost:5173/api/log/all', {
         headers: {
-            Authorization: `Bearer ${cookies.token}`
+            Authorization: `${cookies.get('token')}`
         }
     }).then((response) => {
         logs.value = response.data
